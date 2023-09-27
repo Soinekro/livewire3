@@ -13,14 +13,65 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+
+            $table->enum('document_type', ['dni', 'ruc'])
+                ->default('dni')
+                ->comment('tipo de documento del usuario');
+
+            $table->char('document_number', 11)
+                ->index()
+                ->comment('codigo del usuario');
+
+            $table->string('name')
+                ->comment('nombre del usuario');
+
+            $table->string('apellido_paterno')
+                ->comment('apellido paterno del usuario');
+
+            $table->string('apellido_materno')
+                ->comment('apellido materno del usuario');
+
+            $table->date('birthday')
+                ->nullable()
+                ->comment('fecha de nacimiento del usuario');
+
+            $table->string('email')
+                ->unique()
+                ->nullable()
+                ->comment('correo electronico del usuario');
+
+            $table->string('phone', 9)
+                ->nullable()
+                ->default(null)
+                ->comment('telefono del usuario');
+
+            $table->string('contacto', 225)
+                ->nullable()
+                ->default(null)
+                ->comment('contacto del usuario');
+
+            $table->string('address')
+                ->nullable()
+                ->comment('direccion del usuario');
+
+            $table->timestamp('email_verified_at')
+                ->nullable();
+
+            $table->string('password', 80)
+                ->comment('contraseña del usuario');
+
+            $table->smallInteger('points')
+                ->default(0)
+                ->comment('puntos del usuario');
+
             $table->rememberToken();
-            $table->foreignId('current_team_id')->nullable();
-            $table->string('profile_photo_path', 2048)->nullable();
+
+            $table->string('profile_photo_path', 2048)
+                ->nullable();
+
             $table->timestamps();
+
+            $table->softDeletes();
         });
     }
 
