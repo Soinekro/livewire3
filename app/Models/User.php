@@ -25,7 +25,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'document_type',
+        'document_number',
+        'apellido_paterno',
+        'apellido_materno',
+        'birthday',
         'email',
+        'phone',
+        'address',
+        'contacto',
         'password',
     ];
 
@@ -58,4 +66,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'published_by');
+    }
 }
