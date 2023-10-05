@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -58,4 +59,39 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Get the user's full name.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->name} {$this->apellido_paterno} {$this->apellido_materno}";
+    }
+
+    /**
+     * retornar las actividades del usuario
+     *
+     * @return HasMany
+     */
+    public function activities(): HasMany
+    {
+        return $this->hasMany(Activity::class);
+    }
+
+    /**
+     * retornar los proyectos del usuario
+     *
+     * @return HasMany
+     */
+    public function proyects(): HasMany
+    {
+        return $this->hasMany(Proyect::class)->withPivot('role');
+    }
+
+    public function proyectUsers()
+    {
+        return $this->hasMany(ProyectUser::class);
+    }
 }
