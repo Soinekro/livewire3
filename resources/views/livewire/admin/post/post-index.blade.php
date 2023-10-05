@@ -57,7 +57,7 @@
                     @foreach ($posts as $item)
                         <tr>
                             <td class="border px-4 py-2">{{ $item->title }}</td>
-                            <td class="border px-4 py-2">{{ $item->slug }}</td>
+                            <td class="border px-4 py-2">{{ $item->excerpt }}</td>
                             <td class="border px-4 py-2">{{ $item->author->name }}</td>
                             <td class="border px-4 py-2">
                                 @if ($item->status == 'published')

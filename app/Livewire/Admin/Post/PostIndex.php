@@ -7,6 +7,7 @@ use App\Traits\AlertTrait;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 
 class PostIndex extends Component
@@ -14,6 +15,9 @@ class PostIndex extends Component
     use WithPagination;
     use AlertTrait;
 
+
+    #[Locked]
+    public $id;
 
     public $post;
     #[Url()]
@@ -48,10 +52,7 @@ class PostIndex extends Component
     {
         if ($this->readyToLoad) {
             $posts = Post::with('author')
-            ->where('title', 'like', '%' . $this->search . '%')
-                ->orWhere('excerpt', 'like', '%' . $this->search . '%')
-                ->orWhere('body', 'like', '%' . $this->search . '%')
-                ->orWhere('status', 'like', '%' . $this->search . '%')
+                ->filter(['search' => $this->search])
                 ->orderBy($this->sort, $this->direction)
                 ->paginate($this->perPage);
         } else {
@@ -94,13 +95,13 @@ class PostIndex extends Component
     {
         $post = Post::find($post);
         $post->delete();
-        $this->alert('El post '.$post->name.' se eliminó satisfactoriamente', 'error', 'satisfactorio');
+        $this->alert('El post ' . $post->name . ' se eliminó satisfactoriamente', 'error', 'satisfactorio');
     }
 
     public function create()
     {
-        //$this->post = new Post();
         $this->open = true;
+        $this->reset(['title', 'excerpt', 'body', 'status']);
     }
     public function edit($post)
     {
@@ -130,6 +131,6 @@ class PostIndex extends Component
             ]
         );
         $this->reset(['open', 'title', 'excerpt', 'body', 'status']);
-        $this->alert('El post '.$post->name.' se guardó satisfactoriamente', 'success', 'satisfactorio');
+        $this->alert('El post ' . $post->name . ' se guardó satisfactoriamente', 'success', 'satisfactorio');
     }
 }
