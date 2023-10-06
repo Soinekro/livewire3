@@ -1,3 +1,3 @@
 <x-layouts.base>
-    Roles
+    Dashboard
 </x-layouts.base>

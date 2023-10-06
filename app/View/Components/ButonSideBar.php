@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\layouts;
+namespace App\View\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class NavTwo extends Component
+class ButonSideBar extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class NavTwo extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.layouts.nav-two');
+        return view('components.buton-side-bar');
     }
 }
