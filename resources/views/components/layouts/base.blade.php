@@ -15,6 +15,9 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="{{ asset('navs/navcurv.js') }}"></script>
+    {{-- sweetalert --}}
+    <script src="{{asset('vendor/sweetalert/sweetalert.all.js')}}"></script>
+    {{-- alpinejs --}}
     <!-- Styles -->
     @livewireStyles
 </head>

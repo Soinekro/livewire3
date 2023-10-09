@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -12,10 +13,9 @@ class UserComponent extends Component
 {
     use WithPagination;
 
-    #[Locked]
-    public $id;
+    // #[Locked]
+    public $user;
 
-    private $user;
     #[Url()]
     public $search;
     #[Url()]
@@ -30,39 +30,39 @@ class UserComponent extends Component
 
     public $name;
     public $email;
-    public $apellido_materno;
-    public $apellido_paterno;
+    public $birthday;
     public $password;
+    public $document_type = 'dni';
+    public $document_number;
 
     protected $rules = [
         'name' => 'required',
         'email' => 'required|email',
-        'apellido_materno' => 'required',
-        'apellido_paterno' => 'required',
         'password' => 'required',
     ];
 
     public function edit(User $user)
     {
+
+        $this->user = $user;
         $this->name = $user->name;
-        $this->apellido_paterno = $user->apellido_paterno;
-        $this->apellido_materno = $user->apellido_materno;
         $this->email = $user->email;
         $this->password = $user->password;
-        $this->open = true;
-    }
-
-    public function create()
-    {
+        $this->document_type = $user->document_type;
+        $this->document_number = $user->document_number;
         $this->open = true;
     }
 
     public function update()
     {
         $this->validate();
-        $this->user->save();
+        $this->user->update([
+            'name' => $this->name,
+            'document_type' => $this->document_type,
+            'document_number' => $this->document_number,
+        ]);
         $this->open = false;
-        $this->reset('user');
+        //$this->reset('user', 'name', 'document_type', 'document_number');
     }
 
     public function loadUsers()
@@ -103,5 +103,54 @@ class UserComponent extends Component
             ->paginate($this->perPage);
 
         return view('livewire.user-component', compact('users'));
+    }
+
+    #[On('parametersPersona')]
+    public function parametersPersona($persona)
+    {
+        $this->name = $persona->name;
+        $this->email = $persona->email;
+        $this->password = $persona->password;
+        $this->open = true;
+    }
+
+    public function searchDocument()
+    {
+        $this->validate([
+            'document_type' => 'required|in:dni,ruc',
+            'document_number' => $this->document_type == 'dni'
+                ? 'required|numeric|digits:8'
+                : 'required|numeric|digits:11',
+        ]);
+
+        $curl = curl_init();
+
+        // Buscar dni
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => config('services.api_net.url') . $this->document_type . '?numero=' . $this->document_number,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYPEER => 0,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 2,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Referer: https://apis.net.pe/consulta-dni-api',
+                'Authorization: Bearer ' . config('services.api_net.token'),
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        // Datos listos para usar
+        $persona = json_decode($response);
+        if (isset($persona->nombre)) {
+            $this->name = $persona->nombre;
+        } else {
+            $this->name = null;
+            $this->addError('document_number', 'El número de documento no existe');
+        }
     }
 }
