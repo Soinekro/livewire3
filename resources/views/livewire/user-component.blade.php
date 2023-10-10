@@ -1,8 +1,9 @@
 <div wire:init="loadUsers">
     <div class="flex items-center justify-between my-4">
-        <x-forms.button color="blue" type="button" wire:click="createUser">
+        <x-forms.button color="green" type="button" wire:click="createUser">
             <x-slot name="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" height="1em" class="w-6 h-6 mx-auto" viewBox="0 0 640 512">
+                <svg xmlns="http://www.w3.org/2000/svg" height="1em"
+                    class="w-6 h-6 mx-auto fill-blue-500 dark:fill-black" viewBox="0 0 640 512">
                     <path
                         d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
                 </svg>
@@ -22,22 +23,22 @@
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select>
-                <x-forms.input type="text" class="mx-2 sm:mx-1 md:w-2/3 dark:text-black" placeholder="Buscar"
+                <x-forms.input type="text" class="mx-2 sm:mx-1 md:w-2/3 text-gray-800" placeholder="Buscar"
                     wire:model.lazy="search" />
             </div>
         </div>
 
         @if (count($users))
             <table
-                class="table-fixed w-full mt-3 block md:table min-w-full text-sm text-left text-gray-500
+                class="table-fixed w-full mt-3 block md:table min-w-full text-sm text-left text-gray-800
                 dark:text-gray-400">
                 <thead
-                    class="hidden md:table-header-group text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700
+                    class="hidden md:table-header-group text-xs uppercase dark:bg-gray-700
                      dark:text-gray-400">
                     <tr
-                        class="bg-gray-100 dark:bg-gray-700 text-white border border-grey-500
+                        class="bg-gray-300 dark:bg-gray-700 text-black border border-grey-500
                         md:border-none block md:table-row absolute -top-full md:top-auto -left-full
-                        md:left-auto  md:relative ">
+                        md:left-auto  md:relative md:rounded-t-lg ">
                         <th class="px-4 py-2 cursor-pointer" wire:click="order('name')">
                             Nombre
                         </th>
@@ -86,7 +87,8 @@
                             <td class="py-2 block md:table-cell">
                                 <x-forms.button color="blue" type="button" wire:click="edit({{ $item->id }})">
                                     <x-slot name="icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" class="w-6 h-6 mx-auto"
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em"
+                                            class="w-6 h-6 mx-auto fill-green-500 dark:fill-black"
                                             viewBox="0 0 640 512">
                                             <path
                                                 d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
@@ -96,8 +98,8 @@
                                 <x-forms.button color="red" type="button"
                                     onclick="confirmDelete('{{ $item->id }}')">
                                     <x-slot name="icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" class="w-6 h-6 mx-auto"
-                                            viewBox="0 0 448 512">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em"
+                                            class="w-6 h-6 mx-auto fill-red-400 dark:fill-black" viewBox="0 0 448 512">
                                             <path
                                                 d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
                                         </svg>
@@ -110,7 +112,8 @@
                 </tbody>
             </table>
             @if ($users->hasPages())
-                <div class="px-4 py-3 bg-black dark:bg-white border-t border-gray-200 dark:border-gray-700 md:px-6">
+                <div class=" bg-gray-300 dark:bg-white border-t border-gray-200 dark:border-gray-700 md:px-6">
+
                     {{ $users->links() }}
                 </div>
             @endif
@@ -124,7 +127,7 @@
                 </div>
             </tr>
         @else
-            {{-- pantalla de carga --}}
+            <!--pantalla de carga-->
             <div>
                 <style>
                     .loader-dots div {
@@ -200,14 +203,13 @@
         @endif
     </div>
 
-    {{-- modal --}}
+    <!--modal create-->
 
     <x-dialog-modal wire:model="open">
         <x-slot name="title">
             {{ __('Update User') }}
         </x-slot>
         <x-slot name="content">
-            {{-- <div class="grid grid-cols-1 md:grid-cols-2 gap-4"> --}}
 
             <div class="grid md:grid-cols-3 md:gap-4">
                 <div class="relative z-0 w-64 mb-6 group">
@@ -241,8 +243,7 @@
                 </div>
                 <div class="relative z-0 w-full mb-6 group mx-2">
                     <input type="text" name="document_number" id="document_number" autocomplete="off"
-                        wire:model="document_number"
-                        wire:keydown.enter="searchDocument"
+                        wire:model="document_number" wire:keydown.enter="searchDocument"
                         class="block py-2.5 px-0 w-full text-sm text-gray-900
                                         bg-transparent border-0 border-b-2 border-gray-300
                                         appearance-none dark:text-white dark:border-gray-600
@@ -316,7 +317,6 @@
                         (Ex. Google)</label>
                 </div>
             </div>
-            {{-- </div> --}}
         </x-slot>
         <x-slot name="footer">
             <x-secondary-button wire:click="$set('open',false)">
@@ -328,7 +328,7 @@
         </x-slot>
     </x-dialog-modal>
 
-    {{-- scripts --}}
+    <!--scripts -->
     <script>
         // Obtén una referencia al input y los radio buttons
         const numeroInput = document.getElementById('document_number');

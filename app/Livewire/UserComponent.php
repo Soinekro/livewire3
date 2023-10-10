@@ -35,8 +35,6 @@ class UserComponent extends Component
     public $document_type = 'dni';
     public $document_number;
 
-
-
     public function loadUsers()
     {
         $this->readyToLoad = true;
