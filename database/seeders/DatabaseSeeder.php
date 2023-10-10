@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
         User::create([
             'document_type' => 'dni',
             'document_number' => '12345678',
@@ -31,6 +30,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('12345678'),
             'points' => rand(0, 200),
         ]);
+        User::factory(100)->create();
         $this->call([
             ProyectSeeder::class,
             ActivitySeeder::class,

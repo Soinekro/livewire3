@@ -23,9 +23,9 @@ class UserComponent extends Component
     #[Url()]
     public $direction = 'desc';
     #[Url()]
-    public $perPage = '5';
+    public $perPage = '10';
 
-    public $readyToLoad = false;
+    public $readyToLoad = true;
     public $open = false;
 
     public $name;
@@ -35,12 +35,24 @@ class UserComponent extends Component
     public $document_type = 'dni';
     public $document_number;
 
-    protected $rules = [
-        'name' => 'required',
-        'email' => 'required|email',
-        'password' => 'required',
-    ];
 
+
+    public function loadUsers()
+    {
+        $this->readyToLoad = true;
+    }
+
+    public function createUser()
+    {
+        $this->reset([
+            'name',
+            'email',
+            'password',
+            'document_type',
+            'document_number',
+        ]);
+        $this->open = true;
+    }
     public function edit(User $user)
     {
 
@@ -56,18 +68,16 @@ class UserComponent extends Component
     public function update()
     {
         $this->validate();
-        $this->user->update([
+
+        User::updateOrCreate(['id' => $this->user->id], [
             'name' => $this->name,
+            'email' => $this->email,
+            'password' => $this->password,
             'document_type' => $this->document_type,
             'document_number' => $this->document_number,
         ]);
         $this->open = false;
         //$this->reset('user', 'name', 'document_type', 'document_number');
-    }
-
-    public function loadUsers()
-    {
-        $this->readyToLoad = true;
     }
 
     public function order($sort)
@@ -96,16 +106,23 @@ class UserComponent extends Component
 
     public function render()
     {
-        $users = User::query()
-            ->where('name', 'LIKE', "%{$this->search}%")
-            ->orWhere('email', 'LIKE', "%{$this->search}%")
-            ->orderBy($this->sort, $this->direction)
-            ->paginate($this->perPage);
+        if ($this->readyToLoad) {
+            $users = User::query()
+                ->where(function ($query) {
+                    $query->where('name', 'like', '%' . $this->search . '%')
+                        ->orWhere('email', 'like', '%' . $this->search . '%');
+                })
+                //except admin with id 1
+                ->where('id', '<>', 1)
+                ->orderBy($this->sort, $this->direction)
+                ->paginate($this->perPage);
+        } else {
+            $users = [];
+        }
 
         return view('livewire.user-component', compact('users'));
     }
 
-    #[On('parametersPersona')]
     public function parametersPersona($persona)
     {
         $this->name = $persona->name;
@@ -152,5 +169,10 @@ class UserComponent extends Component
             $this->name = null;
             $this->addError('document_number', 'El número de documento no existe');
         }
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
     }
 }

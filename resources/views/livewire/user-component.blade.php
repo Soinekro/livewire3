@@ -1,4 +1,15 @@
 <div wire:init="loadUsers">
+    <div class="flex items-center justify-between my-4">
+        <x-forms.button color="blue" type="button" wire:click="createUser">
+            <x-slot name="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" height="1em" class="w-6 h-6 mx-auto" viewBox="0 0 640 512">
+                    <path
+                        d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
+                </svg>
+            </x-slot>
+            Create User
+        </x-forms.button>
+    </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="flex">
             <div class="flex sm:items-center w-full">
@@ -6,10 +17,8 @@
                     class="border-gray-300 rounded-md shadow-sm focus:border-indigo-300
                             focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700
                             dark:text-gray-300 dark:border-gray-600 hidden xs:block ">
-                    <option value="5">5</option>
                     <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="25">25</option>
+                    <option value="20">20</option>
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select>
@@ -17,6 +26,7 @@
                     wire:model.lazy="search" />
             </div>
         </div>
+
         @if (count($users))
             <table
                 class="table-fixed w-full mt-3 block md:table min-w-full text-sm text-left text-gray-500
@@ -106,14 +116,15 @@
             @endif
         @elseif ($users != [])
             <tr>
-                <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+                <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 dark:bg-gray-700
+                    dark:text-yellow-400"
+                    role="alert">
                     <p class="font-bold">No hay usuarios registrados.</p>
                     <p>Por favor, crea un usuario para empezar.</p>
                 </div>
             </tr>
         @else
             {{-- pantalla de carga --}}
-
             <div>
                 <style>
                     .loader-dots div {
@@ -200,7 +211,7 @@
 
             <div class="grid md:grid-cols-3 md:gap-4">
                 <div class="relative z-0 w-64 mb-6 group">
-                    <input type="radio" name="document_type" value="dni" wire:model.live="document_type"
+                    <input type="radio" name="document_type" value="dni" wire:model="document_type"
                         class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300
                         dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700
                             dark:border-gray-600"
@@ -210,7 +221,7 @@
                             text-gray-900 dark:text-gray-300">
                         DNI
                     </label>
-                    <input type="radio" name="document_type" value="ruc" wire:model.live="document_type"
+                    <input type="radio" name="document_type" value="ruc" wire:model="document_type"
                         class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300
                             dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700
                             dark:border-gray-600">
@@ -231,6 +242,7 @@
                 <div class="relative z-0 w-full mb-6 group mx-2">
                     <input type="text" name="document_number" id="document_number" autocomplete="off"
                         wire:model="document_number"
+                        wire:keydown.enter="searchDocument"
                         class="block py-2.5 px-0 w-full text-sm text-gray-900
                                         bg-transparent border-0 border-b-2 border-gray-300
                                         appearance-none dark:text-white dark:border-gray-600
@@ -315,8 +327,6 @@
             </x-danger-button>
         </x-slot>
     </x-dialog-modal>
-
-
 
     {{-- scripts --}}
     <script>
