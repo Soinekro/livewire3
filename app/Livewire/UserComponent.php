@@ -113,7 +113,8 @@ class UserComponent extends Component
                 //except admin with id 1
                 ->where('id', '<>', 1)
                 ->orderBy($this->sort, $this->direction)
-                ->paginate($this->perPage);
+                ->paginate($this->perPage)
+                ->onEachSide(0);
         } else {
             $users = [];
         }
