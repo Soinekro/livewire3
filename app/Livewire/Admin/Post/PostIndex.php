@@ -17,7 +17,9 @@ class PostIndex extends Component
 
 
     #[Locked]
-    public $id;
+    protected $id;
+
+    public $action = 'create';
 
     public $post;
     #[Url()]
@@ -91,11 +93,10 @@ class PostIndex extends Component
         $this->resetPage();
     }
 
-    public function destroy($post)
+    public function destroy(Post $post)
     {
-        $post = Post::find($post);
         $post->delete();
-        $this->alert('El post ' . $post->name . ' se eliminó satisfactoriamente', 'error', 'satisfactorio');
+        $this->alert('El post <b>' . $post->title . '</b> se eliminó satisfactoriamente', 'error', 'satisfactorio');
     }
 
     public function create()
@@ -103,20 +104,19 @@ class PostIndex extends Component
         $this->open = true;
         $this->reset(['title', 'excerpt', 'body', 'status']);
     }
-    public function edit($post)
+    public function edit(Post $post)
     {
-        $this->post = Post::find($post);
-        $this->title = $this->post->title;
-        $this->excerpt = $this->post->excerpt;
-        $this->body = $this->post->body;
-        $this->status = $this->post->status;
-        $this->slug = $this->post->slug;
+        $this->post = $post;
+        $this->action = 'update';
+        $this->fill($post);
+
         $this->open = true;
     }
 
     public function save()
     {
         $this->validate();
+        // dd($this->action);
         $post = Post::updateOrCreate(
             [
                 'id' => $this->post->id ?? null,
@@ -130,7 +130,7 @@ class PostIndex extends Component
                 'published_by' => auth()->user()->id,
             ]
         );
-        $this->reset(['open', 'title', 'excerpt', 'body', 'status']);
-        $this->alert('El post ' . $post->name . ' se guardó satisfactoriamente', 'success', 'satisfactorio');
+        $this->alert('El post ' . $post->title . ' se '.$this->action.' satisfactoriamente', 'success', 'satisfactorio');
+        $this->reset(['open', 'title', 'excerpt', 'body', 'status'/* , 'post' */, 'action']);
     }
 }

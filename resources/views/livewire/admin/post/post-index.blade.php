@@ -27,23 +27,19 @@
             <table class="table-fixed w-full">
                 <thead>
                     <tr class="bg-gray-100 dark:bg-gray-700">
-                        <th class="px-4 py-2 cursor-pointer"
-                            wire:click="order('title')">
+                        <th class="px-4 py-2 cursor-pointer" wire:click="order('title')">
                             Título
 
                         </th>
-                        <th class="px-4 py-2 cursor-pointer"
-                            wire:click="order('published_by')">
+                        <th class="px-4 py-2 cursor-pointer" wire:click="order('published_by')">
                             Slug
 
                         </th>
-                        <th class="px-4 py-2 cursor-pointer"
-                            wire:click="order('published_by')">
+                        <th class="px-4 py-2 cursor-pointer" wire:click="order('published_by')">
                             Autor
 
                         </th>
-                        <th class="px-4 py-2 cursor-pointer"
-                            wire:click="order('status')">
+                        <th class="px-4 py-2 cursor-pointer" wire:click="order('status')">
                             Estado
 
                         </th>
@@ -68,11 +64,11 @@
                                 @endif
                             </td>
                             <td class="border px-4 py-2">
-                                <x-button wire:click="edit({{ $item->id }})" type="button"
+                                <x-button wire:click="edit('{{ $item->slug }}')" type="button"
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                     Editar
                                 </x-button>
-                                <x-button onclick="confirmDelete('{{ $item->id }}')" type="button"
+                                <x-button onclick="confirmDelete('{{ $item->slug }}')" type="button"
                                     class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                                     Eliminar
                                 </x-button>
@@ -102,6 +98,11 @@
 
     <x-dialog-modal wire:model="open">
         <x-slot name="title">
+            @if ($action == 'create')
+                {{ __('Crear') }}
+            @else
+                {{ __('Editar') }}
+            @endif
             {{ __('Post') }}
         </x-slot>
         <x-slot name="content">
