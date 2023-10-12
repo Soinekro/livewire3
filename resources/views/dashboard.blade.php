@@ -101,7 +101,7 @@
 
     <div class="w-full sm:px-6 lg:p-8 block sm:block lg:flex">
         <!--horas-->
-        <div class="shadow-md sm:rounded-lg m-3 p-4 lg:basis-3/4">
+        <div class="shadow-md sm:rounded-lg m-auto xs:m-3 p-4 lg:basis-3/4">
             <form method="POST" action="#" class="m-2">
                 @csrf
                 <div class="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 xl:grid-cols-6">
@@ -114,14 +114,12 @@
                             <div class="flex">
                                 <input type="checkbox" name="hours[]" class="peer hidden" value="{{ $i }}" />
                                 <label for="hours"
-                                    class="select-none cursor-pointer rounded-lg border-2
-                                    text-center w-full text-white
-                                        bg-verde-600 peer-disabled:opacity-20 peer-disabled:cursor-no-drop
-                                        border-gray-500 py-2 px-1 font-bold
-                                        transition-colors duration-200 ease-in-out
-                                        peer-checked:bg-yellow-200 peer-checked:text-gray-800
-                                         peer-checked:border-yellow-900
-                                         "
+                                    class="select-none mx-auto w-12 xs:w-full cursor-pointer rounded-lg
+                                    border-2 text-center text-white bg-verde-600
+                                    peer-disabled:opacity-20 peer-disabled:cursor-no-drop border-gray-500
+                                    py-2 px-1 font-bold transition-colors duration-200 ease-in-out
+                                    peer-checked:bg-yellow-200 peer-checked:text-gray-800
+                                    peer-checked:border-yellow-900"
                                     disabled>
                                     {{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00
                                 </label>
