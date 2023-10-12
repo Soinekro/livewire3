@@ -2,6 +2,14 @@
     <x-layouts.navs.breadcrumb>
 
         <x-layouts.navs.breadcrumb-first-l-i/>
+
+        <x-layouts.navs.breadcrumb-first-l-i>
+            <x-slot name="route">
+                {{ route('admin.dashboard') }}
+            </x-slot>
+            Roles
+        </x-layouts.navs.breadcrumb-first-l-i>
+
         <x-layouts.navs.breadcrumb-normal-l-i>
             Users
         </x-layouts.navs.breadcrumb-normal-l-i>
