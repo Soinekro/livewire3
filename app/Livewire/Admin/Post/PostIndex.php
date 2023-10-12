@@ -116,7 +116,7 @@ class PostIndex extends Component
     public function save()
     {
         $this->validate();
-        // dd($this->action);
+        dd($this->action);
         $post = Post::updateOrCreate(
             [
                 'id' => $this->post->id ?? null,
@@ -130,7 +130,7 @@ class PostIndex extends Component
                 'published_by' => auth()->user()->id,
             ]
         );
+        $this->reset(['open', 'title', 'excerpt', 'body', 'status', 'post', 'action']);
         $this->alert('El post ' . $post->title . ' se '.$this->action.' satisfactoriamente', 'success', 'satisfactorio');
-        $this->reset(['open', 'title', 'excerpt', 'body', 'status'/* , 'post' */, 'action']);
     }
 }
