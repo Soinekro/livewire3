@@ -1,5 +1,5 @@
 <div wire:init="loadUsers">
-    <div class="flex items-center justify-between my-4">
+    <div class="flex flex-row my-4">
         <x-forms.button color="green" type="button" wire:click="createUser">
             <x-slot name="icon">
                 <svg xmlns="http://www.w3.org/2000/svg" height="1em"
@@ -39,6 +39,12 @@
                         class="bg-gray-300 dark:bg-gray-700 text-black border border-grey-500
                         md:border-none block md:table-row absolute -top-full md:top-auto -left-full
                         md:left-auto  md:relative md:rounded-t-lg ">
+                        <th class="px-4 py-2 cursor-pointer" wire:click="order('document_type')">
+                            {{ __('Document Type') }}
+                        </th>
+                        <th class="px-4 py-2 cursor-pointer" wire:click="order('document_number')">
+                            {{ __('Document Number') }}
+                        </th>
                         <th class="px-4 py-2 cursor-pointer" wire:click="order('name')">
                             Nombre
                         </th>
@@ -64,13 +70,39 @@
                             block md:table-row dark:border-t dark:border-gray-600
                             dark:border-t-gray-300">
 
-                            <td class="py-2 px-2 block md:table-cell">
+                            <td class="py-2 md:py-0 px-2 block md:table-cell">
+                                <div class="inline-block w-1/3 md:hidden font-bold">
+                                    {{ __('Document Type') }}
+                                </div>
+                                <div>
+                                    @if ($item->document_type == 'dni')
+                                        <span
+                                            class="inline-block px-2 text-sm font-semibold leading-5 text-blue-800 @if ($num % 2 == 0) dark:bg-gray-200 dark:text-black
+                                        @else dark:bg-gray-600 dark:text-white @endif">
+                                            DNI
+                                        </span>
+                                    @else
+                                        <span
+                                            class="inline-block px-2 text-sm font-semibold leading-5 text-green-800 @if ($num % 2 == 0) dark:bg-gray-200 dark:text-black
+                                        @else dark:bg-gray-600 dark:text-white @endif">
+                                            RUC
+                                        </span>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="py-2 md:py-0 px-2 block md:table-cell">
+                                <div class="inline-block w-1/3 md:hidden font-bold">
+                                    {{ __('Document Number') }}
+                                </div>
+                                <div>{{ $item->document_number }}</div>
+                            </td>
+                            <td class="py-2 md:py-0 px-2 block md:table-cell">
                                 <div class="inline-block w-1/3 md:hidden font-bold">
                                     Nombres
                                 </div>
                                 <div>{{ $item->getFullNameAttribute() }}</div>
                             </td>
-                            <td class="py-2 block md:table-cell">
+                            <td class="py-2 md:py-0 px-2 block md:table-cell">
                                 <div class="inline-block w-1/3 md:hidden font-bold">
                                     Puntos
                                 </div>
@@ -84,14 +116,13 @@
                                 </div>
 
                             </td>
-                            <td class="py-2 block md:table-cell">
+                            <td class="py-2 md:py-0 block md:table-cell">
                                 <x-forms.button color="blue" type="button" wire:click="edit({{ $item->id }})">
                                     <x-slot name="icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="1em"
-                                            class="w-6 h-6 mx-auto fill-green-500 dark:fill-black"
-                                            viewBox="0 0 640 512">
+                                            class="w-6 h-6 mx-auto fill-green-400 dark:fill-black" viewBox="0 0 640 512">
                                             <path
-                                                d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
+                                                d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H322.8c-3.1-8.8-3.7-18.4-1.4-27.8l15-60.1c2.8-11.3 8.6-21.5 16.8-29.7l40.3-40.3c-32.1-31-75.7-50.1-123.9-50.1H178.3zm435.5-68.3c-15.6-15.6-40.9-15.6-56.6 0l-29.4 29.4 71 71 29.4-29.4c15.6-15.6 15.6-40.9 0-56.6l-14.4-14.4zM375.9 417c-4.1 4.1-7 9.2-8.4 14.9l-15 60.1c-1.4 5.5 .2 11.2 4.2 15.2s9.7 5.6 15.2 4.2l60.1-15c5.6-1.4 10.8-4.3 14.9-8.4L576.1 358.7l-71-71L375.9 417z" />
                                         </svg>
                                     </x-slot>
                                 </x-forms.button>

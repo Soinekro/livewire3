@@ -1,26 +1,28 @@
 <x-app-layout>
-    <div
-        class=" {{-- mx-auto --}} py-10 sm:px-6 lg:px-8 {{-- bg-slate-400  --}}rounded-md grid gap-4 grid-cols-1 gap-y-4 lg:grid-cols-2">
-        <div class=" max-h-full">
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Profile Imformation') }}
+        </h2>
+    </x-slot>
+    <div class="rounded-md grid grid-cols-1 lg:gap-4 lg:grid-col-2 lg:justify-items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-2">
             @if (Laravel\Fortify\Features::canUpdateProfileInformation())
-                <div class="m-5 sm:mt-0">
+                <div class="shadow-md sm:rounded-lg m-3 p-4">
                     @livewire('profile.update-profile-information-form')
                 </div>
-                <x-section-border />
             @endif
-            <div class="m-5 sm:mt-0">
-                @livewire('profile.logout-other-browser-sessions-form')
+            <div class="shadow-md sm:rounded-lg m-3 p-4">
+                @livewire('profile.update-password-form')
             </div>
         </div>
-        <div class="max-h-full">
+        <div class="grid grid-cols-1 lg:grid-cols-2">
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
-                <div class="m-5 sm:mt-0 ">
-                    @livewire('profile.update-password-form')
+            <div class="shadow-md sm:rounded-lg m-3 p-4">
+                    @livewire('profile.logout-other-browser-sessions-form')
                 </div>
             @endif
             @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
-                <x-section-border />
-                <div class="m-5 sm:mt-0">
+                <div class="shadow-md sm:rounded-lg m-3 p-4">
                     @livewire('profile.delete-user-form')
                 </div>
             @endif
